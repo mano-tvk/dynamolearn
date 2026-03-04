@@ -76,7 +76,7 @@ users = {
 # Landing Page (Home)
 @app.route("/")
 def home():
-    return "App is working"
+    return render_template("home.html")
 
 
 # Login Page + Logic
@@ -431,4 +431,5 @@ def delete_file(file_id):
     return redirect("/login")
 
 if __name__ == "__main__":
+
     app.run(debug=True)
