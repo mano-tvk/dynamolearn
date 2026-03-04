@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamo Growth Hub | Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1>Dynamo Growth Hub</h1>
+            <p class="tagline">Log in to track your growth, work smarter, and unlock your potential.</p>
+
+            {% if error %}
+                <p class="error-message">{{ error }}</p>
+            {% endif %}
+
+            <form action="/login" method="POST">
+                <input type="text" name="username" placeholder="Enter Username" required><br><br>
+                <input type="password" name="password" placeholder="Enter Password" required><br><br>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

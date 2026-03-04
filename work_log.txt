@@ -1,0 +1,21 @@
+User: member1 | Worked Time: 0:00:14.716720
+User: member3 | Worked Time: 0:00:06.292484
+User: admin | Worked Time: 0:00:09.735282
+User: admin | Domain: No Domain | Worked Time: 0:00:06.036110
+User: member1 | Domain: No Domain | Worked Time: 0:00:28.618440
+User: admin | Domain: No Domain | Worked Time: 0:00:06.913524
+User: admin | Domain: No Domain | Worked Time: 0:00:07.444433
+User: admin | Domain: No Domain | Worked Time: 0:00:04.951095
+User: member2 | Domain: Python | Worked Time: 0:00:32.360047
+User: admin | Domain: No Domain | Worked Time: 0:00:19.184956
+User: member2 | Domain: No Domain | Worked Time: 0:00:29.826358
+User: admin | Domain: No Domain | Worked Time: 0:00:11.149063
+User: member2 | Domain: No Domain | Worked Time: 0:00:09.099537
+User: member2 | Domain: No Domain | Worked Time: 0:00:16.163311
+User: admin | Domain: No Domain | Worked Time: 0:00:36.438224
+User: admin | Domain: No Domain | Worked Time: 0:00:35.002899
+User: member3 | Domain: No Domain | Worked Time: 0:00:25.874883
+User: Admin | Domain: No Domain | Worked Time: 0:00:19.696938
+User: Neha29 | Domain: No Domain | Worked Time: 0:00:15.299881
+User: Neha29 | Domain: No Domain | Worked Time: 0:00:05.284579
+User: Neha29 | Domain: No Domain | Worked Time: 0:00:51.765131

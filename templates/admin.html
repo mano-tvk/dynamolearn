@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | Dynamo Growth Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <h1 class="app-title">Dynamo Growth Hub – Admin</h1>
+            <p class="top-tagline">Monitor member activity, files, and learning analytics.</p>
+        </div>
+        <div class="top-bar-right">
+            <a href="/logout"><button class="secondary-btn">Logout</button></a>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="stats-grid">
+            <div class="card stat-card">
+                <h2>Total Members</h2>
+                <p class="stat-value">{{ total_members }}</p>
+                <p class="stat-label">Active predefined member accounts</p>
+            </div>
+
+            <div class="card stat-card">
+                <h2>Total Hours Logged</h2>
+                <p class="stat-value">{{ total_hours_all }}</p>
+                <p class="stat-label">Cohort-wide focused work time</p>
+            </div>
+
+            <div class="card stat-card">
+                <h2>Total Files Uploaded</h2>
+                <p class="stat-value">{{ total_files_all }}</p>
+                <p class="stat-label">Learning artifacts across all members</p>
+            </div>
+        </section>
+
+        <section class="card full-width">
+            <h2>Member Analytics</h2>
+            {% if members_stats %}
+                <table>
+                    <tr>
+                        <th>Member</th>
+                        <th>Total Time (h:m)</th>
+                        <th>Files Uploaded</th>
+                        <th>Last Login</th>
+                        <th>Last Logout</th>
+                    </tr>
+                    {% for m in members_stats %}
+                    <tr>
+                        <td>{{ m.username }}</td>
+                        <td>{{ m.total_hours }}h {{ m.total_minutes }}m</td>
+                        <td>{{ m.file_count }}</td>
+                        <td>{{ m.last_login or "-" }}</td>
+                        <td>{{ m.last_logout or "-" }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>No member activity recorded yet.</p>
+            {% endif %}
+        </section>
+
+        <section class="card full-width">
+            <h2>Visual Analytics</h2>
+            {% if members_stats %}
+                <div style="display:flex;flex-wrap:wrap;gap:1.5rem;">
+                    <div style="flex:1;min-width:260px;">
+                        <h3>Hours Worked per Member</h3>
+                        <canvas id="hoursChart"></canvas>
+                    </div>
+                    <div style="flex:1;min-width:260px;">
+                        <h3>Files Uploaded per Member</h3>
+                        <canvas id="filesChart"></canvas>
+                    </div>
+                </div>
+            {% else %}
+                <p>No data available yet for charts.</p>
+            {% endif %}
+        </section>
+
+        <section class="card full-width">
+            <h2>Recent Work Sessions</h2>
+            {% if recent_sessions %}
+                <table>
+                    <tr>
+                        <th>Member</th>
+                        <th>Login Time</th>
+                        <th>Logout Time</th>
+                        <th>Duration (seconds)</th>
+                    </tr>
+                    {% for s in recent_sessions %}
+                    <tr>
+                        <td>{{ s[0] }}</td>
+                        <td>{{ s[1] }}</td>
+                        <td>{{ s[2] }}</td>
+                        <td>{{ s[3] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>No work sessions recorded yet.</p>
+            {% endif %}
+        </section>
+
+        <section class="card full-width">
+            <h2>All Uploaded Files</h2>
+            {% if files %}
+                <table>
+                    <tr>
+                        <th>Member</th>
+                        <th>File</th>
+                        <th>Upload Time</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for f in files %}
+                    <tr>
+                        <td>{{ f[1] }}</td>
+                        <td>{{ f[2] }}</td>
+                        <td>{{ f[3] }}</td>
+                        <td>
+                            <a href="/uploads/{{ f[1] }}/{{ f[2] }}" target="_blank">Open</a> |
+                            <a href="/admin_delete/{{ f[0] }}" onclick="return confirm('Delete this file for this member?');">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>No files uploaded yet.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    {% if members_stats %}
+    <script>
+        const memberLabels = [{% for m in members_stats %}"{{ m.username }}"{% if not loop.last %}, {% endif %}{% endfor %}];
+        const memberHours = [{% for m in members_stats %}{{ m.total_hours + (m.total_minutes / 60.0) }}{% if not loop.last %}, {% endif %}{% endfor %}];
+        const memberFiles = [{% for m in members_stats %}{{ m.file_count }}{% if not loop.last %}, {% endif %}{% endfor %}];
+
+        const ctxHours = document.getElementById('hoursChart').getContext('2d');
+        const ctxFiles = document.getElementById('filesChart').getContext('2d');
+
+        new Chart(ctxHours, {
+            type: 'bar',
+            data: {
+                labels: memberLabels,
+                datasets: [{
+                    label: 'Hours Worked',
+                    data: memberHours,
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { labels: { color: '#e5e7eb' } }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#e5e7eb' },
+                        grid: { color: 'rgba(55,65,81,0.4)' }
+                    },
+                    y: {
+                        ticks: { color: '#e5e7eb' },
+                        grid: { color: 'rgba(55,65,81,0.4)' }
+                    }
+                }
+            }
+        });
+
+        new Chart(ctxFiles, {
+            type: 'bar',
+            data: {
+                labels: memberLabels,
+                datasets: [{
+                    label: 'Files Uploaded',
+                    data: memberFiles,
+                    backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { labels: { color: '#e5e7eb' } }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#e5e7eb' },
+                        grid: { color: 'rgba(55,65,81,0.4)' }
+                    },
+                    y: {
+                        ticks: { color: '#e5e7eb' },
+                        grid: { color: 'rgba(55,65,81,0.4)' }
+                    }
+                }
+            }
+        });
+    </script>
+    {% endif %}
+</body>
+</html>
+
