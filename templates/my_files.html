@@ -29,7 +29,7 @@
                         <td>{{ file[1] }}</td>
                         <td>{{ file[2] }}</td>
                         <td>
-                            <a href="/uploads/{{ session['user'] }}/{{ file[1] }}" target="_blank">Open</a> |
+                           <a href="/view_file/{{session['user']}}/{{file[1]}}" target="_blank">Open</a> |
                             <a href="/delete_file/{{ file[0] }}" onclick="return confirm('Delete this file?');">Delete</a>
                         </td>
                     </tr>
@@ -41,4 +41,5 @@
         </section>
     </main>
 </body>
+
 </html>
