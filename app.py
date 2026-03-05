@@ -441,13 +441,11 @@ def view_file(username, filename):
 
     folder = os.path.join(app.config["UPLOAD_FOLDER"], username)
 
-    return send_from_directory(
-        folder,
-        filename
-    )
+    return send_from_directory(folder, filename)
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
