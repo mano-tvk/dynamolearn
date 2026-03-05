@@ -344,7 +344,10 @@ def logout():
 
 
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
+
+# create uploads folder automatically
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
@@ -445,5 +448,6 @@ def view_file(username, filename):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
