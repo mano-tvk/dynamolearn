@@ -430,6 +430,18 @@ def delete_file(file_id):
 
     return redirect("/login")
 
-if __name__ == "__main__":
 
+# ⭐ ADD THIS CODE HERE
+from flask import send_from_directory
+
+@app.route("/view_file/<username>/<filename>")
+def view_file(username, filename):
+    return send_from_directory(
+        os.path.join(app.config["UPLOAD_FOLDER"], username),
+        filename
+    )
+
+
+if __name__ == "__main__":
     app.run(debug=True)
+
