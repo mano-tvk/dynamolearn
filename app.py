@@ -440,11 +440,17 @@ from flask import send_from_directory
 def view_file(username, filename):
 
     folder = os.path.join(app.config["UPLOAD_FOLDER"], username)
+    filepath = os.path.join(folder, filename)
+
+    # check if file exists
+    if not os.path.exists(filepath):
+        return "File not found", 404
 
     return send_from_directory(folder, filename)
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
